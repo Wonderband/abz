@@ -1,0 +1,9 @@
+@import "./index.scss";
+header {
+  color: getColor("disabled");
+}
+
+.testIcons {
+  width: 100px;
+  height: 100px;
+}

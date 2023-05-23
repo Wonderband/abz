@@ -1,0 +1,12 @@
+$colors: (
+  "primary": #f4e041,
+  "secondary": #00bdd3,
+  "background": #f8f8f8,
+  "hover": #ffe302,
+  "disabled": #b4b4b4,
+  "white": #ffffff,
+);
+
+@function getColor($key) {
+  @return map-get($colors, $key);
+}
