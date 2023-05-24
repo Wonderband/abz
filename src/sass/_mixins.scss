@@ -1,0 +1,36 @@
+@mixin mq($type) {
+  $mobile: 360px;
+  $tablet: 768px;
+  $laptop: 1024px;
+  $desktop: 1440px;
+
+  @if $type == "mob" {
+    @media screen and (min-width: $mobile) {
+      @content;
+    }
+  }
+
+  @if $type == "tab" {
+    @media screen and (min-width: $tablet) {
+      @content;
+    }
+  }
+
+  //   @if $type == "tab-only" {
+  //     @media screen and (min-width: $tablet) and (max-width: ($desktop - 0.02)) {
+  //       @content;
+  //     }
+  //   }
+
+  @if $type == "lap" {
+    @media screen and (min-width: $laptop) {
+      @content;
+    }
+  }
+
+  @if $type == "desk" {
+    @media screen and (min-width: $desktop) {
+      @content;
+    }
+  }
+}
