@@ -1,3 +1,3 @@
-export const Button = ({ label, clickHandler }) => {
-  return <button onClick={clickHandler}>{label}</button>;
+export const Button = ({ label }) => {
+  return <a href={`#${label}`}>{label}</a>;
 };

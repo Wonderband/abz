@@ -5,6 +5,7 @@ $colors: (
   "hover": #ffe302,
   "disabled": #b4b4b4,
   "white": #ffffff,
+  "black": #000000,
 );
 
 @function getColor($key) {

@@ -1,3 +1,5 @@
+@import "./colors";
+
 @mixin mq($type) {
   $mobile: 360px;
   $tablet: 768px;
@@ -33,4 +35,11 @@
       @content;
     }
   }
+}
+
+@mixin font-h1 {
+  font-size: 40px;
+  font-weight: 400;
+  line-height: calc(40 / 40);
+  text-align: center;
 }

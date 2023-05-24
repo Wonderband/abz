@@ -1,6 +1,6 @@
 @import-normalize;
 @import "./sass/reset.scss";
-@import "./sass/colors.scss";
+@import "./sass/colors";
 @import "./sass/mixins";
 
 body {
@@ -9,13 +9,18 @@ body {
   font-weight: 400;
   font-size: 16px;
   line-height: calc(26 / 16);
+  box-sizing: border-box;
+  color: getColor("black");
+}
+
+#root {
+  padding-top: 60px;
 }
 
 .container {
   margin: 0 auto;
   padding: 0 16px;
   outline: 1px solid red;
-  background-color: aqua;
 
   @include mq(tab) {
     padding: 0 32px;
@@ -28,10 +33,14 @@ body {
   }
 }
 
-button {
+a {
+  display: block;
   background: getColor("primary");
   border-radius: 80px;
-  padding: 4px 23px;
+  padding: 4px 0;
+  width: 100px;
+  text-align: center;
+  margin: 0 auto;
 
   &.disabled {
     background: getColor("disabled");

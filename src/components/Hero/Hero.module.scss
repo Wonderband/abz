@@ -1,0 +1,22 @@
+@import "../../sass/mixins";
+@import "../../sass/colors";
+
+.heroSection {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../img/pexels-alexandr-podvalny-1227513.jpeg");
+  background-size: 1220px;
+  background-position: center bottom;
+  padding: 40px 16px 71px;
+}
+
+.title {
+  @include font-h1;
+  margin-bottom: 21px;
+  color: getColor("white");
+}
+
+.descripton {
+  color: getColor("white");
+  text-align: center;
+  margin-bottom: 32px;
+}
