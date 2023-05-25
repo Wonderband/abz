@@ -6,9 +6,18 @@ export const Header = () => {
   return (
     <header className={css.header}>
       <div className={`${css.headerContainer} container`}>
-        <svg className={css.logo}>
+        <svg
+          className={css.logo}
+          onClick={() =>
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            })
+          }
+        >
           <use href={`${icons}#icon-logo`}></use>
         </svg>
+
         <nav>
           <ul className={css.navList}>
             <li>
@@ -19,9 +28,6 @@ export const Header = () => {
             </li>
           </ul>
         </nav>
-
-        {/* <button className="disabled">Users</button>
-        <button className="disabled">Sign up</button> */}
       </div>
     </header>
   );

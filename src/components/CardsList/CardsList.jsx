@@ -53,7 +53,7 @@ export const CardsList = () => {
           ))}
       </ul>
       {currentPage < totalPages && (
-        <Button label="Show more" clickHandler={loadMoreUsers} />
+        <Button label="Show more" clickHandler={loadMoreUsers} id="Show more" />
       )}
     </>
   );
