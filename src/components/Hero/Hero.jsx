@@ -12,7 +12,7 @@ export const Hero = () => {
         mind. They should also be excited to learn, as the world of Front-End
         Development keeps evolving.
       </p>
-      <Button label="Sign up" />
+      <Button label="Sign up" class="button" />
     </section>
   );
 };

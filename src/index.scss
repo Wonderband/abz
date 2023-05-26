@@ -33,21 +33,6 @@ body {
   }
 }
 
-a {
-  display: block;
-  background: getColor("primary");
-  border-radius: 80px;
-  padding: 4px 0;
-  width: 100px;
-  text-align: center;
-  margin: 0 auto;
-
-  &.disabled {
-    background: getColor("disabled");
-    color: getColor("white");
-  }
-
-  &:hover {
-    background: getColor("hover");
-  }
+button {
+  font: inherit;
 }
