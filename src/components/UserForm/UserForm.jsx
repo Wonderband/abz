@@ -21,8 +21,9 @@ export const UserForm = () => {
   };
 
   const handleFileChange = (e) => {
-    if (e.target.files[0]) setPhoto(e.target.files[0].name);
+    if (e.target.files[0]) setPhoto(e.target.files[0]);
     else setPhoto("Upload your photo");
+    console.log(e.target.files[0]);
   };
 
   const validation = yup.object().shape({
@@ -48,6 +49,25 @@ export const UserForm = () => {
       .string()
       .min(2, "Select!!!")
       .required("Please, select the position"),
+    file: yup
+      .mixed()
+      .test(
+        "fileFormat",
+        "Invalid file format. Only JPEG files are allowed.",
+        (value) => {
+          if (!value) return false; // Fail validation if no file is selected
+          return /\.(jpe?g)$/i.test(value.name);
+        }
+      )
+      .test(
+        "fileSize",
+        "File size is too large. Maximum allowed size is 5MB.",
+        (value) => {
+          if (!value) return false; // Fail validation if no file is selected
+          return value.size < 0; // 5MB in bytes
+        }
+      )
+      .required("Please select a  file."),
   });
 
   return (
@@ -58,11 +78,12 @@ export const UserForm = () => {
           email: "",
           phone: "",
           picked: "",
+          file: undefined,
         }}
         validationSchema={validation}
       >
-        {({ values }) => (
-          <Form
+        {({ values, setFieldValue }) => (
+          <form
             className={css.addUserForm}
             onSubmit={(e) => handleSubmit(e, values)}
           >
@@ -107,23 +128,33 @@ export const UserForm = () => {
               </label>
             </div>
             <ErrorMessage render={(msg) => <div>{msg}</div>} name="picked" />
-            <label htmlFor="file">Upload</label>
-            <input
+
+            {/* <label htmlFor="file">Upload</label> */}
+            {/* <Field
               id="file"
               name="file"
               type="file"
+              // onChange={(event) => {
+              //   const file = event.currentTarget.files[0];
+              //   console.log(file);
+              //   setFieldValue("file", file);
+              //   setPhoto(file ? file.name : "Upload your photo");
+              // }}
+
               onChange={handleFileChange}
-              style={{ display: "none" }}
+              // style={{ display: "none" }}
             />
-            <div>{photo}</div>
+            <div name="photo">{photo.name}</div>
+            <ErrorMessage name="file" render={(msg) => <div>{msg}</div>} /> */}
+
             <Button
               label="Sign up"
               type="submit"
               clickHandler={() => {
-                console.log("hello");
+                console.log("submit");
               }}
             />
-          </Form>
+          </form>
         )}
       </Formik>
     </section>
