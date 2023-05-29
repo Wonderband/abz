@@ -4,6 +4,7 @@ import { Button } from "../Button/Button";
 import * as yup from "yup";
 import InputMask from "react-input-mask";
 import css from "./UserForm.module.scss";
+// import { CustomFileInput } from "../CustomFileInput/CustomFileInput";
 
 export const UserForm = () => {
   const [photo, setPhoto] = useState("Upload your photo");
@@ -20,10 +21,17 @@ export const UserForm = () => {
     });
   };
 
-  const handleFileChange = (e) => {
-    if (e.target.files[0]) setPhoto(e.target.files[0]);
-    else setPhoto("Upload your photo");
-    console.log(e.target.files[0]);
+  const checkResolution = (value) => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = URL.createObjectURL(value);
+      img.onload = () => {
+        const width = img.naturalWidth;
+        const height = img.naturalHeight;
+        console.log(width, height);
+        resolve(width >= 1000 && height >= 1000);
+      };
+    });
   };
 
   const validation = yup.object().shape({
@@ -45,30 +53,79 @@ export const UserForm = () => {
       .string()
       .matches(/^\+\d{2} \(\d{3}\) \d{3}-\d{2}-\d{2}$/, "Invalid phone number")
       .required("Phone is required"), //yup.number().positive().required('Please input the amount'),
-    picked: yup
-      .string()
-      .min(2, "Select!!!")
-      .required("Please, select the position"),
     file: yup
       .mixed()
+      .required("Photo is required")
       .test(
         "fileFormat",
         "Invalid file format. Only JPEG files are allowed.",
         (value) => {
-          if (!value) return false; // Fail validation if no file is selected
-          return /\.(jpe?g)$/i.test(value.name);
+          console.log(value.type);
+          return value.type === "image/jpeg" || value.type === "image/jpg";
         }
       )
       .test(
         "fileSize",
         "File size is too large. Maximum allowed size is 5MB.",
         (value) => {
-          if (!value) return false; // Fail validation if no file is selected
-          return value.size < 0; // 5MB in bytes
+          console.log(value.size);
+          return value.size <= 5 * 1024 * 1024; // 5MB in bytes
         }
-      )
-      .required("Please select a  file."),
+      ),
+    // .test(
+    //   "fileResolution",
+    //   "Minimum resolution is 70x70px",
+    //   async (value) => {
+    //     const resolutionResult = await checkResolution(value);
+    //     console.log(resolutionResult);
+    //     const isValid =
+    //       value !== null &&
+    //       (value.type === "image/jpeg" || value.type === "image/jpg") &&
+    //       value.size <= 5 * 1024 * 1024 &&
+    //       resolutionResult;
+    //     console.log(isValid);
+
+    //     return isValid;
+    //   }
+    // ),
   });
+
+  const CustomFileInput = ({ form, field }) => {
+    const handleFileChange = (e) => {
+      const file = e.currentTarget.files[0];
+      console.log(file);
+      form.setFieldValue(field.name, file);
+      setPhoto(file.name);
+      checkResolution(file).then((isValid) => {
+        if (!isValid) {
+          form.setFieldError(field.name, "Minimum resolution is 70x70px");
+          // Resolution is not valid, display an error message or take appropriate action
+        }
+      });
+      // .catch((error) => {
+      //   // Handle any error that occurred during resolution validation
+      // });
+    };
+
+    const handleClick = () => {
+      form.setFieldTouched(field.name, true);
+    };
+    return (
+      <div>
+        <label htmlFor="file" onClick={handleClick}>
+          Upload
+        </label>
+        <input
+          id={field.name}
+          name={field.name}
+          type="file"
+          onChange={handleFileChange}
+          style={{ display: "none" }}
+        />
+        <div>{photo}</div>
+      </div>
+    );
+  };
 
   return (
     <section>
@@ -78,12 +135,14 @@ export const UserForm = () => {
           email: "",
           phone: "",
           picked: "",
-          file: undefined,
+          file: null,
         }}
         validationSchema={validation}
+        validateOnChange
+        validateOnBlur
       >
         {({ values, setFieldValue }) => (
-          <form
+          <Form
             className={css.addUserForm}
             onSubmit={(e) => handleSubmit(e, values)}
           >
@@ -127,25 +186,28 @@ export const UserForm = () => {
                 QA
               </label>
             </div>
-            <ErrorMessage render={(msg) => <div>{msg}</div>} name="picked" />
+            {/* <ErrorMessage render={(msg) => <div>{msg}</div>} name="picked" /> */}
 
-            {/* <label htmlFor="file">Upload</label> */}
-            {/* <Field
+            <Field name="file" component={CustomFileInput} />
+            <ErrorMessage name="file" render={(msg) => <div>{msg}</div>} />
+            {/* <input
               id="file"
               name="file"
               type="file"
-              // onChange={(event) => {
-              //   const file = event.currentTarget.files[0];
-              //   console.log(file);
-              //   setFieldValue("file", file);
-              //   setPhoto(file ? file.name : "Upload your photo");
-              // }}
+              onChange={(event) => {
+                const file = event.currentTarget.files[0];
+                console.log(file);
+                setFieldValue("file", file ? file.name : null);
+                setPhoto(file ? file.name : "Upload your photo");
+              }}
 
-              onChange={handleFileChange}
+              // onChange={handleFileChange}
               // style={{ display: "none" }}
-            />
+              // onChange={(event) => {
+              //   setFieldValue("file", event.currentTarget.files[0]);
+              // }}
+            /> */}
             <div name="photo">{photo.name}</div>
-            <ErrorMessage name="file" render={(msg) => <div>{msg}</div>} /> */}
 
             <Button
               label="Sign up"
@@ -154,7 +216,7 @@ export const UserForm = () => {
                 console.log("submit");
               }}
             />
-          </form>
+          </Form>
         )}
       </Formik>
     </section>
