@@ -1,5 +1,5 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useState } from "react";
+import { Formik, Form, Field, ErrorMessage, useField, getIn } from "formik";
+import { useRef, useState } from "react";
 import { Button } from "../Button/Button";
 import * as yup from "yup";
 import InputMask from "react-input-mask";
@@ -18,19 +18,6 @@ export const UserForm = () => {
       phone,
       picked,
       photo,
-    });
-  };
-
-  const checkResolution = (value) => {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.src = URL.createObjectURL(value);
-      img.onload = () => {
-        const width = img.naturalWidth;
-        const height = img.naturalHeight;
-        console.log(width, height);
-        resolve(width >= 1000 && height >= 1000);
-      };
     });
   };
 
@@ -91,37 +78,64 @@ export const UserForm = () => {
   });
 
   const CustomFileInput = ({ form, field }) => {
+    const inputRef = useRef(null);
+    const checkResolution = (value) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        if (value.type === "image/jpeg" || value.type === "image/jpg") {
+          img.src = URL.createObjectURL(value);
+          img.onload = () => {
+            const width = img.naturalWidth;
+            const height = img.naturalHeight;
+            console.log(width, height);
+            resolve(width >= 700 && height >= 700);
+          };
+        } else reject("Not image!");
+      });
+    };
+
     const handleFileChange = (e) => {
       const file = e.currentTarget.files[0];
       console.log(file);
       form.setFieldValue(field.name, file);
       setPhoto(file.name);
-      checkResolution(file).then((isValid) => {
-        if (!isValid) {
-          form.setFieldError(field.name, "Minimum resolution is 70x70px");
-          // Resolution is not valid, display an error message or take appropriate action
-        }
-      });
-      // .catch((error) => {
-      //   // Handle any error that occurred during resolution validation
-      // });
+
+      checkResolution(file)
+        .then((isValid) => {
+          console.log(file);
+          if (!isValid) {
+            form.setFieldError(field.name, "Minimum resolution is 70x70px");
+            // Resolution is not valid, display an error message or take appropriate action
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+      console.log(field);
+      inputRef.current.click();
+      const errorMessage = getIn(form.errors, field.name);
+      console.log(errorMessage);
       form.setFieldTouched(field.name, true);
+      if (errorMessage === "Minimum resolution is 70x70px") {
+        console.log(errorMessage);
+        form.setFieldError(field.name, errorMessage);
+      }
     };
     return (
       <div>
-        <label htmlFor="file" onClick={handleClick}>
-          Upload
-        </label>
+        <div onClick={handleClick}>Upload</div>
         <input
+          ref={inputRef}
           id={field.name}
           name={field.name}
           type="file"
           onChange={handleFileChange}
           style={{ display: "none" }}
         />
+
         <div>{photo}</div>
       </div>
     );
