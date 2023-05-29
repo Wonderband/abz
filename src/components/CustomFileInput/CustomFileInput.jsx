@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const CustomFileInput = () => {
+export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
   const inputRef = useRef(null);
   const [file, setFile] = useState(null);
   const [clicked, setClicked] = useState(false);
@@ -22,6 +22,7 @@ export const CustomFileInput = () => {
 
   useEffect(() => {
     const validate = (file) => {
+      setIsValid(false);
       if (!file && clicked) {
         setError("REQUIRED");
         return;
@@ -38,18 +39,21 @@ export const CustomFileInput = () => {
       if (file)
         checkResolution(file)
           .then((isValid) => {
-            if (isValid) setError("");
-            else setError("Minimum resolution is 70x70px");
+            if (isValid) {
+              setError("");
+              setIsValid(true);
+            } else setError("Minimum resolution is 70x70px");
           })
           .catch((error) => {
             console.log(error);
           });
     };
     validate(file);
-  }, [file, clicked]);
+  }, [file, clicked, setIsValid]);
 
   const handleFileChange = (e) => {
     setFile(e.currentTarget.files[0]);
+    passSelectedFile(e.currentTarget.files[0]);
   };
 
   const handleClick = (e) => {

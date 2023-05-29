@@ -5,7 +5,7 @@ import css from "./Button.module.scss";
 //   console.log("submitted form!");
 // };
 
-export const Button = ({ label, clickHandler, type, isWide }) => {
+export const Button = ({ label, clickHandler, type, isWide, disabled }) => {
   const buttonClasses = isWide
     ? `${css.allButtons} ${css.wideButton}`
     : css.allButtons;
@@ -18,7 +18,7 @@ export const Button = ({ label, clickHandler, type, isWide }) => {
     );
   else
     return (
-      <button className={buttonClasses} type={type}>
+      <button className={buttonClasses} type={type} disabled={disabled}>
         {label}
       </button>
     );

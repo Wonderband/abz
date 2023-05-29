@@ -7,6 +7,8 @@ import css from "./UserForm.module.scss";
 import { CustomFileInput } from "../CustomFileInput/CustomFileInput";
 
 export const UserForm = () => {
+  const [isFileUploadValid, setIsFileUploadValid] = useState(false);
+  const [selectedImage, setselectedImage] = useState(null);
   const handleSubmit = (e, values) => {
     const { name, email, phone, picked } = values;
     e.preventDefault();
@@ -15,6 +17,7 @@ export const UserForm = () => {
       email,
       phone,
       picked,
+      selectedImage,
     });
   };
 
@@ -81,14 +84,14 @@ export const UserForm = () => {
           name: "",
           email: "",
           phone: "",
-          picked: "",
+          picked: "Frontend",
           file: null,
         }}
         validationSchema={validation}
         validateOnChange
         validateOnBlur
       >
-        {({ values, setFieldValue }) => (
+        {({ values, isValid, dirty }) => (
           <Form
             className={css.addUserForm}
             onSubmit={(e) => handleSubmit(e, values)}
@@ -135,11 +138,16 @@ export const UserForm = () => {
             </div>
             {/* <ErrorMessage render={(msg) => <div>{msg}</div>} name="picked" /> */}
 
-            <CustomFileInput />
+            <CustomFileInput
+              isValid={isFileUploadValid}
+              setIsValid={setIsFileUploadValid}
+              passSelectedFile={setselectedImage}
+            />
 
             <Button
               label="Sign up"
               type="submit"
+              disabled={!isValid || !dirty || !isFileUploadValid}
               clickHandler={() => {
                 console.log("submit");
               }}

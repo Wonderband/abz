@@ -13,9 +13,10 @@
     width: 120px;
   }
 
-  &.disabled {
+  &:disabled {
     background: getColor("disabled");
     color: getColor("white");
+    cursor: auto;
   }
 
   &:hover {
