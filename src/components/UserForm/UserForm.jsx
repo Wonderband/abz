@@ -1,14 +1,12 @@
-import { Formik, Form, Field, ErrorMessage, useField, getIn } from "formik";
-import { useRef, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useState } from "react";
 import { Button } from "../Button/Button";
 import * as yup from "yup";
 import InputMask from "react-input-mask";
 import css from "./UserForm.module.scss";
-// import { CustomFileInput } from "../CustomFileInput/CustomFileInput";
+import { CustomFileInput } from "../CustomFileInput/CustomFileInput";
 
 export const UserForm = () => {
-  const [photo, setPhoto] = useState("Upload your photo");
-
   const handleSubmit = (e, values) => {
     const { name, email, phone, picked } = values;
     e.preventDefault();
@@ -17,7 +15,6 @@ export const UserForm = () => {
       email,
       phone,
       picked,
-      photo,
     });
   };
 
@@ -40,25 +37,25 @@ export const UserForm = () => {
       .string()
       .matches(/^\+\d{2} \(\d{3}\) \d{3}-\d{2}-\d{2}$/, "Invalid phone number")
       .required("Phone is required"), //yup.number().positive().required('Please input the amount'),
-    file: yup
-      .mixed()
-      .required("Photo is required")
-      .test(
-        "fileFormat",
-        "Invalid file format. Only JPEG files are allowed.",
-        (value) => {
-          console.log(value.type);
-          return value.type === "image/jpeg" || value.type === "image/jpg";
-        }
-      )
-      .test(
-        "fileSize",
-        "File size is too large. Maximum allowed size is 5MB.",
-        (value) => {
-          console.log(value.size);
-          return value.size <= 5 * 1024 * 1024; // 5MB in bytes
-        }
-      ),
+    // file: yup
+    //   .mixed()
+    //   .required("Photo is required")
+    //   .test(
+    //     "fileFormat",
+    //     "Invalid file format. Only JPEG files are allowed.",
+    //     (value) => {
+    //       console.log(value.type);
+    //       return value.type === "image/jpeg" || value.type === "image/jpg";
+    //     }
+    //   )
+    //   .test(
+    //     "fileSize",
+    //     "File size is too large. Maximum allowed size is 5MB.",
+    //     (value) => {
+    //       console.log(value.size);
+    //       return value.size <= 5 * 1024 * 1024; // 5MB in bytes
+    //     }
+    //   ),
     // .test(
     //   "fileResolution",
     //   "Minimum resolution is 70x70px",
@@ -76,70 +73,6 @@ export const UserForm = () => {
     //   }
     // ),
   });
-
-  const CustomFileInput = ({ form, field }) => {
-    const inputRef = useRef(null);
-    const checkResolution = (value) => {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        if (value.type === "image/jpeg" || value.type === "image/jpg") {
-          img.src = URL.createObjectURL(value);
-          img.onload = () => {
-            const width = img.naturalWidth;
-            const height = img.naturalHeight;
-            console.log(width, height);
-            resolve(width >= 700 && height >= 700);
-          };
-        } else reject("Not image!");
-      });
-    };
-
-    const handleFileChange = (e) => {
-      const file = e.currentTarget.files[0];
-      console.log(file);
-      form.setFieldValue(field.name, file);
-      setPhoto(file.name);
-
-      checkResolution(file)
-        .then((isValid) => {
-          console.log(file);
-          if (!isValid) {
-            form.setFieldError(field.name, "Minimum resolution is 70x70px");
-            // Resolution is not valid, display an error message or take appropriate action
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-
-    const handleClick = (e) => {
-      console.log(field);
-      inputRef.current.click();
-      const errorMessage = getIn(form.errors, field.name);
-      console.log(errorMessage);
-      form.setFieldTouched(field.name, true);
-      if (errorMessage === "Minimum resolution is 70x70px") {
-        console.log(errorMessage);
-        form.setFieldError(field.name, errorMessage);
-      }
-    };
-    return (
-      <div>
-        <div onClick={handleClick}>Upload</div>
-        <input
-          ref={inputRef}
-          id={field.name}
-          name={field.name}
-          type="file"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
-        />
-
-        <div>{photo}</div>
-      </div>
-    );
-  };
 
   return (
     <section>
@@ -202,26 +135,7 @@ export const UserForm = () => {
             </div>
             {/* <ErrorMessage render={(msg) => <div>{msg}</div>} name="picked" /> */}
 
-            <Field name="file" component={CustomFileInput} />
-            <ErrorMessage name="file" render={(msg) => <div>{msg}</div>} />
-            {/* <input
-              id="file"
-              name="file"
-              type="file"
-              onChange={(event) => {
-                const file = event.currentTarget.files[0];
-                console.log(file);
-                setFieldValue("file", file ? file.name : null);
-                setPhoto(file ? file.name : "Upload your photo");
-              }}
-
-              // onChange={handleFileChange}
-              // style={{ display: "none" }}
-              // onChange={(event) => {
-              //   setFieldValue("file", event.currentTarget.files[0]);
-              // }}
-            /> */}
-            <div name="photo">{photo.name}</div>
+            <CustomFileInput />
 
             <Button
               label="Sign up"

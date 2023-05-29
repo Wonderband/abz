@@ -1,36 +1,74 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-export const CustomFileInput = ({ form, field, photo, setPhoto }) => {
-  const fileInputRef = useRef(null);
+export const CustomFileInput = () => {
+  const inputRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const [clicked, setClicked] = useState(false);
+  const [error, setError] = useState(false);
 
-  const handleFileChange = (event) => {
-    const file = event.currentTarget.files[0];
-    form.setFieldValue(field.name, file);
-    setPhoto(file.name);
-    form.setFieldTouched(field.name, true);
-    console.log(file);
+  const checkResolution = (value) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      if (value.type === "image/jpeg" || value.type === "image/jpg") {
+        img.src = URL.createObjectURL(value);
+        img.onload = () => {
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+          resolve(width >= 70 && height >= 70);
+        };
+      } else reject("Not image!");
+    });
+  };
+
+  useEffect(() => {
+    const validate = (file) => {
+      if (!file && clicked) {
+        setError("REQUIRED");
+        return;
+      }
+
+      if (file && file.type !== "image/jpeg" && file.type !== "image/jpg") {
+        setError("Wrong type");
+        return;
+      }
+      if (file && file.size > 5 * 1024 * 1024) {
+        setError("Too big!");
+        return;
+      }
+      if (file)
+        checkResolution(file)
+          .then((isValid) => {
+            if (isValid) setError("");
+            else setError("Minimum resolution is 70x70px");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+    };
+    validate(file);
+  }, [file, clicked]);
+
+  const handleFileChange = (e) => {
+    setFile(e.currentTarget.files[0]);
   };
 
   const handleClick = (e) => {
-    form.setFieldTouched(field.name, true);
-  };
-
-  const handleBlur = () => {
-    form.setFieldTouched(field.name, true);
+    inputRef.current.click();
+    if (clicked === false) setClicked(true);
   };
   return (
     <div>
-      <label htmlFor="file">Upload</label>
+      <div onClick={handleClick}>Upload</div>
       <input
-        id={field.name}
-        name={field.name}
+        ref={inputRef}
+        id="file"
+        name="file"
         type="file"
-        ref={fileInputRef}
         onChange={handleFileChange}
-        onBlur={handleBlur}
         style={{ display: "none" }}
       />
-      <div>{photo}</div>
+      <div>{file && file.name}</div>
+      <div>{error}</div>
     </div>
   );
 };
