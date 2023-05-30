@@ -6,8 +6,8 @@ import { UserCard } from "../UserCard/UserCard";
 export const CardsList = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [pending, setPending] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
   const PER_PAGE = 6;
 
   useEffect(() => {
