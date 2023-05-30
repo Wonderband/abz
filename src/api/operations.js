@@ -7,3 +7,7 @@ const axIstance = axios.create({
 export async function getUsersFromAPI(paramObj) {
   return await axIstance.get("users", { params: paramObj });
 }
+
+export async function getPositionsFromAPI() {
+  return await axIstance.get("positions");
+}

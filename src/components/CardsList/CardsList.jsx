@@ -26,18 +26,8 @@ export const CardsList = () => {
       .finally(() => setPending(false));
   }, [currentPage]);
 
-  //   useEffect(() => {
-  //     if (currentPage === 1) return;
-  //     const params = { page: currentPage, count: PER_PAGE };
-  //     getUsersFromAPI(params).then((res) => {
-  //       console.log("error!");
-  //       setUsers((users) => {
-  //         return [...users, ...res.data.users];
-  //       });
-  //     });
-  //   }, []);
-
   const loadMoreUsers = () => {
+    console.log(currentPage);
     setCurrentPage((page) => page + 1);
   };
 

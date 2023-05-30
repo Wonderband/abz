@@ -18,7 +18,12 @@ export const Button = ({ label, clickHandler, type, isWide, disabled }) => {
     );
   else
     return (
-      <button className={buttonClasses} type={type} disabled={disabled}>
+      <button
+        className={buttonClasses}
+        type={type}
+        disabled={disabled}
+        onClick={clickHandler}
+      >
         {label}
       </button>
     );
