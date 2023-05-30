@@ -5,7 +5,11 @@ import * as yup from "yup";
 import InputMask from "react-input-mask";
 import css from "./UserForm.module.scss";
 import { CustomFileInput } from "../CustomFileInput/CustomFileInput";
-import { getPositionsFromAPI } from "../../api/operations";
+import {
+  addUserToAPI,
+  getPositionsFromAPI,
+  getTokenFromAPI,
+} from "../../api/operations";
 
 export const UserForm = () => {
   const [isFileUploadValid, setIsFileUploadValid] = useState(false);
@@ -29,22 +33,48 @@ export const UserForm = () => {
       .finally(() => setPending(false));
   }, []);
 
+  const cleanPhoneNumber = (phoneNumber) => {
+    return "+" + phoneNumber.replace(/\D/g, "");
+  };
+
   const handleSubmit = (e, values) => {
     e.preventDefault();
     const { name, email, phone, picked } = values;
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email);
-    formData.append("phone", phone);
+    formData.append("phone", cleanPhoneNumber(phone));
+    formData.append("position_id", picked);
     formData.append("photo", selectedImage);
 
-    console.log("Form data:", {
-      name,
-      email,
-      phone,
-      picked,
-      selectedImage,
-    });
+    console.log(phone);
+    setPending(true);
+    getTokenFromAPI()
+      .then((res) => {
+        if (!res.data.success) {
+          console.log(res.data.message);
+          return;
+        }
+        const token = res.data.token;
+        console.log(token);
+        addUserToAPI(formData, token)
+          .then((result) => {
+            console.log(result);
+            if (!result.data.success) {
+              console.log(result.data.message);
+              console.log(result.data.fails);
+              return;
+            }
+          })
+          .catch((err) => {
+            console.log(err.message);
+          })
+          .finally(() => setPending(false));
+      })
+      .catch((err) => {
+        console.log(err.message);
+      })
+      .finally(() => setPending(false));
   };
 
   const validation = yup.object().shape({
@@ -77,7 +107,7 @@ export const UserForm = () => {
           name: "",
           email: "",
           phone: "",
-          picked: positions.length > 0 ? positions[0].name : "",
+          picked: positions.length > 0 ? positions[0].id : "",
           file: null,
         }}
         validationSchema={validation}
@@ -118,10 +148,10 @@ export const UserForm = () => {
                           <Field
                             type="radio"
                             name="picked"
-                            value={position.name}
-                            checked={values.picked === position.name}
+                            value={position.id}
+                            checked={values.picked === position.id}
                             onChange={() =>
-                              setFieldValue("picked", position.name)
+                              setFieldValue("picked", position.id)
                             }
                           />
                           {position.name}

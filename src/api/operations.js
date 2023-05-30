@@ -11,3 +11,13 @@ export async function getUsersFromAPI(paramObj) {
 export async function getPositionsFromAPI() {
   return await axIstance.get("positions");
 }
+
+export async function getTokenFromAPI() {
+  return await axIstance.get("token");
+}
+
+export async function addUserToAPI(formData, token) {
+  return await axIstance.post("users", formData, {
+    headers: { Token: token, "Content-Type": "multipart/form-data" },
+  });
+}
