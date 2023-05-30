@@ -4,7 +4,8 @@ const initialState = {
   error: false,
   pending: false,
   users: [],
-  page: 1,
+  currentPage: 1,
+  formSent: false,
 };
 
 const globalSlice = createSlice({
@@ -18,13 +19,17 @@ const globalSlice = createSlice({
       state.pending = payload;
     },
     setUsers(state, { payload }) {
-      state.users = [...state.users, ...payload];
+      state.users = payload;
     },
-    setPage(state, { payload }) {
-      state.page = payload;
+    setCurrentPage(state, { payload }) {
+      state.currentPage = payload;
+    },
+    setFormSent(state, { payload }) {
+      state.formSent = payload;
     },
   },
 });
 
-export const { setError, setPending, setUsers, setPage } = globalSlice.actions;
+export const { setError, setPending, setUsers, setCurrentPage, setFormSent } =
+  globalSlice.actions;
 export const globalReducer = globalSlice.reducer;

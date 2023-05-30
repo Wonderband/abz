@@ -10,12 +10,15 @@ import {
   getPositionsFromAPI,
   getTokenFromAPI,
 } from "../../api/operations";
+import { useDispatch } from "react-redux";
+import { setCurrentPage, setError, setFormSent } from "../../redux/globalSlice";
 
 export const UserForm = () => {
   const [isFileUploadValid, setIsFileUploadValid] = useState(false);
   const [selectedImage, setselectedImage] = useState(null);
   const [positions, setPositions] = useState([]);
   const [pending, setPending] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setPending(true);
@@ -53,10 +56,12 @@ export const UserForm = () => {
       .then((res) => {
         if (!res.data.success) {
           console.log(res.data.message);
+          dispatch(setError(res.data.message));
           return;
         }
         const token = res.data.token;
         console.log(token);
+
         addUserToAPI(formData, token)
           .then((result) => {
             console.log(result);
@@ -65,6 +70,8 @@ export const UserForm = () => {
               console.log(result.data.fails);
               return;
             }
+            dispatch(setFormSent(true));
+            dispatch(setCurrentPage(1));
           })
           .catch((err) => {
             console.log(err.message);
