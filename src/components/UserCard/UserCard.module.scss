@@ -1,0 +1,29 @@
+@import "../../sass/colors";
+
+.userCard {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background: getColor("white");
+  border-radius: 10px;
+  align-items: center;
+  gap: 20px;
+}
+
+.userPhoto {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.userInfo {
+  width: 100%;
+}
+.userName,
+.userInfo p {
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

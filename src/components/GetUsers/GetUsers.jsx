@@ -5,7 +5,7 @@ export const GetUsers = () => {
   return (
     <section id="Users" className={css.getUsers}>
       <div className="container">
-        <h2>Working with GET request</h2>
+        <h2 className={css.title}>Working with GET request</h2>
         <CardsList />
       </div>
     </section>

@@ -10,11 +10,9 @@ import { getUsersFromAPI } from "../../api/operations";
 import { selectGlobal } from "../../redux/selectors";
 import { Button } from "../Button/Button";
 import { UserCard } from "../UserCard/UserCard";
+import css from "./CardList.module.scss";
 
 export const CardsList = () => {
-  // const [users, setUsers] = useState([]);
-  // const [currentPage, setCurrentPage] = useState(1);
-  // const [pending, setPending] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const PER_PAGE = 6;
   const { users, currentPage } = useSelector(selectGlobal);
@@ -44,10 +42,10 @@ export const CardsList = () => {
   return (
     <>
       {/* {pending && <>Loadind data...</>} */}
-      <ul>
+      <ul className={css.usersList}>
         {users.length > 0 &&
           users.map((user) => (
-            <li key={user.id}>
+            <li key={user.id} className={css.listItem}>
               <UserCard user={user} />
             </li>
           ))}
