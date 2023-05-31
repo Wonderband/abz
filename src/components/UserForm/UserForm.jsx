@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import * as yup from "yup";
@@ -87,9 +87,9 @@ export const UserForm = () => {
   const validation = yup.object().shape({
     name: yup
       .string()
-      .required("Please input name")
-      .min(2, "Too short!")
-      .max(60, "Too long!"),
+      .required("Name is required")
+      .min(2, "Name should be 2 letters at least")
+      .max(60, "Name shouldn't ne longer than 60 letters"),
     email: yup
       .string()
       .required("Email is required")
@@ -106,45 +106,81 @@ export const UserForm = () => {
       .matches(/^\+\d{2} \(\d{3}\) \d{3}-\d{2}-\d{2}$/, "Invalid phone number"),
   });
 
+  const HelperText = ({ name }) => {
+    const { errors, values } = useFormikContext();
+    return (
+      <>
+        {!errors[name] && !values[name] && (
+          <div className={css.helperText}>Please, input your name</div>
+        )}
+        {!errors[name] && values[name] && (
+          <div className={css.helperText}>Your name is fine</div>
+        )}
+      </>
+    );
+  };
+
   return (
-    <section>
-      {pending && <>Loadind data...</>}
-      <Formik
-        enableReinitialize={true}
-        initialValues={{
-          name: "",
-          email: "",
-          phone: "",
-          picked: positions.length > 0 ? positions[0].id : "",
-          file: null,
-        }}
-        validationSchema={validation}
-        validateOnChange
-        validateOnBlur
-      >
-        {({ values, isValid, dirty, setFieldValue }) => (
-          <Form
-            className={css.addUserForm}
-            onSubmit={(e) => handleSubmit(e, values)}
-          >
-            <label htmlFor="name">Your name</label>
-            <Field id="name" name="name" placeholder="Your name" />
-            <ErrorMessage name="name" render={(msg) => <div>{msg}</div>} />
-            <label htmlFor="email">Email</label>
-            <Field id="email" name="email" placeholder="Email" />
-            <ErrorMessage name="email" render={(msg) => <div>{msg}</div>} />
-            <label htmlFor="phone">Phone</label>
-            <Field id="phone" name="phone">
-              {({ field }) => (
-                <InputMask
-                  {...field}
-                  mask="+38 (099) 999-99-99"
-                  placeholder="Phone"
-                  // maskPlaceholder="_"
-                />
-              )}
-            </Field>
-            <ErrorMessage name="phone" render={(msg) => <div>{msg}</div>} />
+    // <div className={css.UserForm}>
+    /* {pending && <>Loadind data...</>} */
+    <Formik
+      enableReinitialize={true}
+      initialValues={{
+        name: "",
+        email: "",
+        phone: "",
+        picked: positions.length > 0 ? positions[0].id : "",
+        file: null,
+      }}
+      validationSchema={validation}
+      validateOnChange
+      validateOnBlur
+    >
+      {({ values, isValid, dirty, setFieldValue, errors, touched }) => (
+        <Form
+          className={css.addUserForm}
+          onSubmit={(e) => handleSubmit(e, values)}
+        >
+          <div className={css.inputFieldsWrapper}>
+            <div className={css.formGroup}>
+              <label htmlFor="name" className={css.inputLabel}>
+                Your name
+              </label>
+              <Field
+                id="name"
+                name="name"
+                placeholder="Your name"
+                className={`${css.inputField} ${
+                  errors.name && touched.name ? css.error : ""
+                }`}
+              />
+              <ErrorMessage
+                name="name"
+                render={(msg) => (
+                  <div className={`${css.helperText} ${css.error} `}>{msg}</div>
+                )}
+              />
+              <HelperText name="name" />
+            </div>
+            <div className={css.formGroup}>
+              <label htmlFor="email">Email</label>
+              <Field id="email" name="email" placeholder="Email" />
+              <ErrorMessage name="email" render={(msg) => <div>{msg}</div>} />
+            </div>
+            <div className={css.formGroup}>
+              <label htmlFor="phone">Phone</label>
+              <Field id="phone" name="phone">
+                {({ field }) => (
+                  <InputMask
+                    {...field}
+                    mask="+38 (099) 999-99-99"
+                    placeholder="Phone"
+                    // maskPlaceholder="_"
+                  />
+                )}
+              </Field>
+              <ErrorMessage name="phone" render={(msg) => <div>{msg}</div>} />
+            </div>
             <div id="my-radio-group">Select your position</div>
             <div role="group" aria-labelledby="my-radio-group">
               <ul className={css.positionsList}>
@@ -176,16 +212,16 @@ export const UserForm = () => {
               setIsValid={setIsFileUploadValid}
               passSelectedFile={setselectedImage}
             />
-
-            <Button
-              label="Sign up"
-              type="submit"
-              disabled={!isValid || !dirty || !isFileUploadValid}
-              clickHandler={() => {}}
-            />
-          </Form>
-        )}
-      </Formik>
-    </section>
+          </div>
+          <Button
+            label="Sign up"
+            type="submit"
+            disabled={!isValid || !dirty || !isFileUploadValid}
+            clickHandler={() => {}}
+          />
+        </Form>
+      )}
+    </Formik>
+    // </div>
   );
 };

@@ -43,3 +43,15 @@
   line-height: calc(40 / 40);
   text-align: center;
 }
+
+@mixin font-normal {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: calc(26 / 16);
+}
+
+@mixin font-helper {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: calc(14 / 12);
+}

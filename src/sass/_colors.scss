@@ -6,6 +6,9 @@ $colors: (
   "disabled": #b4b4b4,
   "white": #ffffff,
   "black": #000000,
+  "border": #d0cfcf,
+  "formText": #7e7e7e,
+  "error": #cb3d40,
 );
 
 @function getColor($key) {

@@ -1,1 +1,51 @@
+@import "../../sass/colors";
+@import "../../sass/mixins";
 
+.inputFieldsWrapper {
+  margin-bottom: 50px;
+}
+
+.formGroup {
+  position: relative;
+  color: getColor("formText");
+}
+
+.inputLabel {
+  display: none;
+  position: absolute;
+  top: -7px;
+  left: 16px;
+  padding: 2px 4px;
+  @include font-helper;
+  background-color: getColor("background");
+}
+
+.inputField {
+  box-sizing: border-box;
+  height: 54px;
+  width: 100%;
+  padding: 14px 16px;
+  @include font-normal;
+  color: getColor("formText");
+  background-color: getColor("background");
+  border: 1px solid getColor("border");
+  border-radius: 4px;
+  outline: none;
+
+  &:focus {
+    border: 2px solid getColor("border");
+  }
+  &.error {
+    border: 2px solid getColor("error");
+  }
+}
+
+.helperText {
+  @include font-helper;
+  padding: 4px 16px;
+  color: getColor("formText");
+
+  &.error {
+    color: getColor("error");
+  }
+}

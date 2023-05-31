@@ -8,11 +8,11 @@ import React from "react";
 export const AddUser = React.forwardRef((_, ref) => {
   const { formSent } = useSelector(selectGlobal);
   return (
-    <section id="Sign up" ref={ref}>
+    <section id="Sign up" ref={ref} className={css.addUserSection}>
       <div className="container">
         {!formSent && (
           <>
-            <h2>Working with POST request</h2>
+            <h2 className={css.title}>Working with POST request</h2>
             <UserForm />
           </>
         )}
@@ -21,9 +21,9 @@ export const AddUser = React.forwardRef((_, ref) => {
             <svg className={css.testIcons}>
               <use href={`${icons}#icon-success-image`}></use>
             </svg>
-            <svg className={css.testIcons}>
+            {/* <svg className={css.testIcons}>
               <use href={`${icons}#icon-photo-cover`}></use>
-            </svg>
+            </svg> */}
           </div>
         )}
       </div>

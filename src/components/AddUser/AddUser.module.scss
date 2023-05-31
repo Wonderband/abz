@@ -1,0 +1,9 @@
+@import "../../sass/mixins";
+
+.addUserSection {
+  margin-bottom: 100px;
+}
+.title {
+  @include font-h1;
+  margin-bottom: 50px;
+}
