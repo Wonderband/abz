@@ -41,6 +41,23 @@ export const UserForm = () => {
   };
 
   const handleSubmit = (e, values) => {
+    const addUser = (formData, token) => {
+      addUserToAPI(formData, token)
+        .then((result) => {
+          if (!result.data.success) {
+            console.log(result.data.message);
+            console.log(result.data.fails);
+            return;
+          }
+          dispatch(setFormSent(true));
+          dispatch(setCurrentPage(1));
+        })
+        .catch((err) => {
+          console.log(err.message);
+        })
+        .finally(() => setPending(false));
+    };
+
     e.preventDefault();
     const { name, email, phone, picked } = values;
     const formData = new FormData();
@@ -50,7 +67,6 @@ export const UserForm = () => {
     formData.append("position_id", picked);
     formData.append("photo", selectedImage);
 
-    console.log(phone);
     setPending(true);
     getTokenFromAPI()
       .then((res) => {
@@ -60,23 +76,7 @@ export const UserForm = () => {
           return;
         }
         const token = res.data.token;
-        console.log(token);
-
-        addUserToAPI(formData, token)
-          .then((result) => {
-            console.log(result);
-            if (!result.data.success) {
-              console.log(result.data.message);
-              console.log(result.data.fails);
-              return;
-            }
-            dispatch(setFormSent(true));
-            dispatch(setCurrentPage(1));
-          })
-          .catch((err) => {
-            console.log(err.message);
-          })
-          .finally(() => setPending(false));
+        addUser(formData, token);
       })
       .catch((err) => {
         console.log(err.message);
@@ -87,18 +87,19 @@ export const UserForm = () => {
   const validation = yup.object().shape({
     name: yup
       .string()
+      .required("Please input name")
       .min(2, "Too short!")
-      .max(60, "Too long!")
-      .required("Please input name"),
+      .max(60, "Too long!"),
     email: yup
       .string()
       .required("Email is required")
-      // .email("Invalid email address")
+      .min(2, "Too short!")
+      .max(254, "Email address exceeds the maximum length")
       .matches(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Invalid email address"
-      )
-      .max(254, "Email address exceeds the maximum length"),
+      ),
+
     phone: yup
       .string()
       .required("Phone is required")

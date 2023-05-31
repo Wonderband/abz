@@ -1,8 +1,16 @@
+import { useDispatch } from "react-redux";
 import icons from "../../img/sprite.svg";
+import { setFormSent } from "../../redux/globalSlice";
 import { Button } from "../Button/Button";
 import css from "./Header.module.scss";
 
-export const Header = () => {
+export const Header = ({ onReset }) => {
+  const dispatch = useDispatch();
+  const resetUserForm = () => {
+    dispatch(setFormSent(false));
+    onReset();
+  };
+
   return (
     <header className={css.header}>
       <div className={`${css.headerContainer} container`}>
@@ -24,7 +32,7 @@ export const Header = () => {
               <Button label="Users" />
             </li>
             <li>
-              <Button label="Sign up" />
+              <Button label="Sign up" clickHandler={resetUserForm} />
             </li>
           </ul>
         </nav>

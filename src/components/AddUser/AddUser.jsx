@@ -3,11 +3,12 @@ import { selectGlobal } from "../../redux/selectors";
 import { UserForm } from "../UserForm/UserForm";
 import icons from "../../img/sprite.svg";
 import css from "./AddUser.module.scss";
+import React from "react";
 
-export const AddUser = () => {
+export const AddUser = React.forwardRef((_, ref) => {
   const { formSent } = useSelector(selectGlobal);
   return (
-    <section id="Sign up">
+    <section id="Sign up" ref={ref}>
       <div className="container">
         {!formSent && (
           <>
@@ -28,4 +29,4 @@ export const AddUser = () => {
       </div>
     </section>
   );
-};
+});
