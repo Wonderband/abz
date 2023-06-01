@@ -20,7 +20,7 @@ export const CardsList = () => {
 
   useEffect(() => {
     console.log("FIRE!");
-    setPending(true);
+    dispatch(setPending(true));
     const params = { page: currentPage, count: PER_PAGE };
     getUsersFromAPI(params)
       .then((res) => {
@@ -33,7 +33,7 @@ export const CardsList = () => {
         console.log(err.message);
         dispatch(setError(err.message));
       })
-      .finally(() => setPending(false));
+      .finally(() => dispatch(setPending(false)));
   }, [currentPage, dispatch, formSent]);
 
   const loadMoreUsers = () => {

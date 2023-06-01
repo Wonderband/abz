@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage, useFormikContext } from "formik";
+import { Formik, Form, Field, useFormikContext } from "formik";
 import { useEffect, useState } from "react";
 import { Button } from "../Button/Button";
 import * as yup from "yup";
@@ -11,13 +11,18 @@ import {
   getTokenFromAPI,
 } from "../../api/operations";
 import { useDispatch } from "react-redux";
-import { setCurrentPage, setError, setFormSent } from "../../redux/globalSlice";
+import {
+  setCurrentPage,
+  setError,
+  setFormSent,
+  setPending,
+} from "../../redux/globalSlice";
 
 export const UserForm = () => {
   const [isFileUploadValid, setIsFileUploadValid] = useState(false);
   const [selectedImage, setselectedImage] = useState(null);
   const [positions, setPositions] = useState([]);
-  const [pending, setPending] = useState(false);
+  // const [pending, setPending] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -55,7 +60,7 @@ export const UserForm = () => {
         .catch((err) => {
           console.log(err.message);
         })
-        .finally(() => setPending(false));
+        .finally(() => dispatch(setPending(false)));
     };
 
     e.preventDefault();
@@ -67,7 +72,7 @@ export const UserForm = () => {
     formData.append("position_id", picked);
     formData.append("photo", selectedImage);
 
-    setPending(true);
+    dispatch(setPending(true));
     getTokenFromAPI()
       .then((res) => {
         if (!res.data.success) {
