@@ -93,7 +93,7 @@ export const UserForm = () => {
     email: yup
       .string()
       .required("Email is required")
-      .min(2, "Too short!")
+      .min(2, "Email should be 2 letters at least")
       .max(254, "Email address exceeds the maximum length")
       .matches(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -107,14 +107,29 @@ export const UserForm = () => {
   });
 
   const HelperText = ({ name }) => {
-    const { errors, values } = useFormikContext();
+    const { errors, values, touched } = useFormikContext();
+    const helperMessages = {
+      name: ["Please, input your name", "Your name is fine"],
+      email: ["Please, input your email", "Your email is valid"],
+      phone: ["+38 (XXX) XXX - XX - XX", "Your phone number is OK"],
+    };
+
+    const phoneMaskOrValue =
+      values[name] && values[name] !== "+38 (0__) ___-__-__";
+    console.log(phoneMaskOrValue);
+
     return (
       <>
-        {!errors[name] && !values[name] && (
-          <div className={css.helperText}>Please, input your name</div>
+        {!phoneMaskOrValue && (
+          <div className={css.helperText}>{helperMessages[name][0]}</div>
         )}
-        {!errors[name] && values[name] && (
-          <div className={css.helperText}>Your name is fine</div>
+        {!errors[name] && phoneMaskOrValue && (
+          <div className={css.helperText}>{helperMessages[name][1]}</div>
+        )}
+        {errors[name] && phoneMaskOrValue && (
+          <div className={`${css.helperText} ${css.error} `}>
+            {errors[name]}
+          </div>
         )}
       </>
     );
@@ -143,7 +158,12 @@ export const UserForm = () => {
         >
           <div className={css.inputFieldsWrapper}>
             <div className={css.formGroup}>
-              <label htmlFor="name" className={css.inputLabel}>
+              <label
+                htmlFor="name"
+                className={`${css.inputLabel} ${
+                  values.name ? css.touched : ""
+                } ${errors.name ? css.error : ""}`}
+              >
                 Your name
               </label>
               <Field
@@ -151,56 +171,87 @@ export const UserForm = () => {
                 name="name"
                 placeholder="Your name"
                 className={`${css.inputField} ${
-                  errors.name && touched.name ? css.error : ""
+                  errors.name && values.name ? css.error : ""
                 }`}
-              />
-              <ErrorMessage
-                name="name"
-                render={(msg) => (
-                  <div className={`${css.helperText} ${css.error} `}>{msg}</div>
-                )}
               />
               <HelperText name="name" />
             </div>
             <div className={css.formGroup}>
-              <label htmlFor="email">Email</label>
-              <Field id="email" name="email" placeholder="Email" />
-              <ErrorMessage name="email" render={(msg) => <div>{msg}</div>} />
+              <label
+                htmlFor="email"
+                className={`${css.inputLabel} ${
+                  values.email ? css.touched : ""
+                } ${errors.email ? css.error : ""}`}
+              >
+                Email
+              </label>
+              <Field
+                id="email"
+                name="email"
+                placeholder="Email"
+                className={`${css.inputField} ${
+                  errors.email && values.email ? css.error : ""
+                }`}
+              />
+              <HelperText name="email" />
+              {/* <ErrorMessage name="email" render={(msg) => <div>{msg}</div>} /> */}
             </div>
             <div className={css.formGroup}>
-              <label htmlFor="phone">Phone</label>
+              <label
+                htmlFor="phone"
+                className={`${css.inputLabel} ${
+                  values.phone ? css.touched : ""
+                } ${
+                  errors.phone &&
+                  values.phone &&
+                  values.phone !== "+38 (0__) ___-__-__"
+                    ? css.error
+                    : ""
+                }`}
+              >
+                Phone
+              </label>
               <Field id="phone" name="phone">
                 {({ field }) => (
                   <InputMask
                     {...field}
                     mask="+38 (099) 999-99-99"
                     placeholder="Phone"
+                    className={`${css.inputField} ${
+                      errors.phone &&
+                      values.phone &&
+                      values.phone !== "+38 (0__) ___-__-__"
+                        ? css.error
+                        : ""
+                    }`}
                     // maskPlaceholder="_"
                   />
                 )}
               </Field>
-              <ErrorMessage name="phone" render={(msg) => <div>{msg}</div>} />
+              <HelperText name="phone" />
             </div>
-            <div id="my-radio-group">Select your position</div>
-            <div role="group" aria-labelledby="my-radio-group">
+            {/* <div id="my-radio-group" className={css.radioContainer}></div> */}
+            <div
+              role="group"
+              aria-labelledby="my-radio-group"
+              className={css.radioContainer}
+            >
+              <p className={css.radioTitle}>Select your position</p>
               <ul className={css.positionsList}>
                 {positions.map((position, index) => {
                   return (
-                    <li key={position.id}>
-                      {
-                        <label>
-                          <Field
-                            type="radio"
-                            name="picked"
-                            value={position.id}
-                            checked={values.picked === position.id}
-                            onChange={() =>
-                              setFieldValue("picked", position.id)
-                            }
-                          />
-                          {position.name}
-                        </label>
-                      }
+                    <li key={position.id} className={css.radioItem}>
+                      <Field
+                        type="radio"
+                        name="picked"
+                        value={position.id}
+                        checked={values.picked === position.id}
+                        onChange={() => setFieldValue("picked", position.id)}
+                        className={css.radioButton}
+                      />
+                      <label htmlFor="picked" className={css.radioLabel}>
+                        {position.name}
+                      </label>
                     </li>
                   );
                 })}

@@ -5,10 +5,11 @@ $colors: (
   "hover": #ffe302,
   "disabled": #b4b4b4,
   "white": #ffffff,
-  "black": #000000,
+  "black": rgba(0, 0, 0, 0.87),
   "border": #d0cfcf,
   "formText": #7e7e7e,
   "error": #cb3d40,
+  "radio": #00bdd3,
 );
 
 @function getColor($key) {

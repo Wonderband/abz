@@ -8,6 +8,11 @@
 .formGroup {
   position: relative;
   color: getColor("formText");
+  margin-bottom: 28px;
+}
+
+.inputFieldsWrapper .formGroup:nth-child(3) {
+  margin-bottom: 21px;
 }
 
 .inputLabel {
@@ -18,6 +23,14 @@
   padding: 2px 4px;
   @include font-helper;
   background-color: getColor("background");
+
+  &.touched {
+    display: block;
+  }
+
+  &.error {
+    color: getColor("error");
+  }
 }
 
 .inputField {
@@ -49,3 +62,73 @@
     color: getColor("error");
   }
 }
+
+.radioContainer {
+  margin-bottom: 47px;
+}
+
+.radioTitle {
+  margin-bottom: 11px;
+}
+
+// .radioItem {
+//   display: flex;
+//   align-items: center;
+// }
+
+.radioButton {
+  appearance: none;
+  position: relative;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid getColor("border");
+  margin-right: 12px;
+
+  &:checked {
+    border-color: #00bdd3;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background-color: #00bdd3;
+      border-radius: 50%;
+    }
+  }
+}
+
+// .radioLabel:before {
+//   position: relative;
+//   width: 20px;
+//   height: 20px;
+//   border-radius: 50%;
+//   content: "";
+//   display: inline-block;
+//   visibility: visible;
+//   top: 4px;
+//   border: 1px solid #d0cfcf;
+
+//   &:checked {
+//     background-color: #ffa500;
+//   }
+// }
+
+// input[type="radio"]:checked:after {
+//   width: 15px;
+//   height: 15px;
+//   border-radius: 15px;
+//   top: -2px;
+//   left: -1px;
+//   position: relative;
+//   background-color: #ffa500;
+//   content: "";
+//   display: inline-block;
+//   visibility: visible;
+//   border: 2px solid white;
+// }

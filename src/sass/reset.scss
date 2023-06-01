@@ -1,3 +1,4 @@
+@import "./colors";
 body,
 h1,
 h2,
@@ -41,4 +42,9 @@ button {
 
 li {
   display: block;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px getColor("background") inset;
+  background-clip: content-box;
 }
