@@ -2,7 +2,7 @@
 @import "../../sass/mixins";
 
 .inputFieldsWrapper {
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 }
 
 .formGroup {
@@ -102,33 +102,3 @@
     }
   }
 }
-
-// .radioLabel:before {
-//   position: relative;
-//   width: 20px;
-//   height: 20px;
-//   border-radius: 50%;
-//   content: "";
-//   display: inline-block;
-//   visibility: visible;
-//   top: 4px;
-//   border: 1px solid #d0cfcf;
-
-//   &:checked {
-//     background-color: #ffa500;
-//   }
-// }
-
-// input[type="radio"]:checked:after {
-//   width: 15px;
-//   height: 15px;
-//   border-radius: 15px;
-//   top: -2px;
-//   left: -1px;
-//   position: relative;
-//   background-color: #ffa500;
-//   content: "";
-//   display: inline-block;
-//   visibility: visible;
-//   border: 2px solid white;
-// }

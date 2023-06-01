@@ -15,10 +15,11 @@ import css from "./CardList.module.scss";
 export const CardsList = () => {
   const [totalPages, setTotalPages] = useState(1);
   const PER_PAGE = 6;
-  const { users, currentPage } = useSelector(selectGlobal);
+  const { users, currentPage, formSent } = useSelector(selectGlobal);
   const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("FIRE!");
     setPending(true);
     const params = { page: currentPage, count: PER_PAGE };
     getUsersFromAPI(params)
@@ -33,7 +34,7 @@ export const CardsList = () => {
         dispatch(setError(err.message));
       })
       .finally(() => setPending(false));
-  }, [currentPage, dispatch]);
+  }, [currentPage, dispatch, formSent]);
 
   const loadMoreUsers = () => {
     dispatch(setCurrentPage(currentPage + 1));

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import css from "./CustomFileInput.module.scss";
 
 export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
   const inputRef = useRef(null);
@@ -23,17 +24,17 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
   useEffect(() => {
     const validate = (file) => {
       setIsValid(false);
-      if (!file && clicked) {
-        setError("REQUIRED");
+      if (!file) {
+        setError("");
         return;
       }
 
       if (file && file.type !== "image/jpeg" && file.type !== "image/jpg") {
-        setError("Wrong type");
+        setError("Only jpeg/jpg images allowed");
         return;
       }
       if (file && file.size > 5 * 1024 * 1024) {
-        setError("Too big!");
+        setError("Photo exceeds maximum size 5MB");
         return;
       }
       if (file)
@@ -42,7 +43,7 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
             if (isValid) {
               setError("");
               setIsValid(true);
-            } else setError("Minimum resolution is 70x70px");
+            } else setError("Photo resolution should be at least 70x70px");
           })
           .catch((error) => {
             console.log(error);
@@ -61,8 +62,13 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
     if (clicked === false) setClicked(true);
   };
   return (
-    <div>
-      <div onClick={handleClick}>Upload</div>
+    <div className={css.inputContainer}>
+      <div
+        onClick={handleClick}
+        className={`${css.uploadButton} ${error ? css.error : ""}`}
+      >
+        Upload
+      </div>
       <input
         ref={inputRef}
         id="file"
@@ -71,8 +77,11 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
         onChange={handleFileChange}
         style={{ display: "none" }}
       />
-      <div>{file && file.name}</div>
-      <div>{error}</div>
+      <div className={`${css.uploadFile} ${error ? css.error : ""}`}>
+        {file && file.name}
+        {!file && "Upload your photo"}
+      </div>
+      <div className={css.errorMessage}>{error}</div>
     </div>
   );
 };

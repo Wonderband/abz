@@ -94,7 +94,7 @@ export const UserForm = () => {
       .string()
       .required("Email is required")
       .min(2, "Email should be 2 letters at least")
-      .max(254, "Email address exceeds the maximum length")
+      .max(100, "Email address exceeds the maximum length")
       .matches(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Invalid email address"
@@ -107,7 +107,7 @@ export const UserForm = () => {
   });
 
   const HelperText = ({ name }) => {
-    const { errors, values, touched } = useFormikContext();
+    const { errors, values } = useFormikContext();
     const helperMessages = {
       name: ["Please, input your name", "Your name is fine"],
       email: ["Please, input your email", "Your email is valid"],
@@ -116,7 +116,6 @@ export const UserForm = () => {
 
     const phoneMaskOrValue =
       values[name] && values[name] !== "+38 (0__) ___-__-__";
-    console.log(phoneMaskOrValue);
 
     return (
       <>
@@ -238,7 +237,7 @@ export const UserForm = () => {
             >
               <p className={css.radioTitle}>Select your position</p>
               <ul className={css.positionsList}>
-                {positions.map((position, index) => {
+                {positions.map((position) => {
                   return (
                     <li key={position.id} className={css.radioItem}>
                       <Field
