@@ -19,7 +19,6 @@ export const CardsList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("FIRE!");
     dispatch(setPending(true));
     const params = { page: currentPage, count: PER_PAGE };
     getUsersFromAPI(params)
@@ -42,7 +41,6 @@ export const CardsList = () => {
 
   return (
     <>
-      {/* {pending && <>Loadind data...</>} */}
       <ul className={css.usersList}>
         {users.length > 0 &&
           users.map((user) => (

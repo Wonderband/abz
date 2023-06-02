@@ -22,11 +22,10 @@ export const UserForm = () => {
   const [isFileUploadValid, setIsFileUploadValid] = useState(false);
   const [selectedImage, setselectedImage] = useState(null);
   const [positions, setPositions] = useState([]);
-  // const [pending, setPending] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setPending(true);
+    dispatch(setPending(true));
     getPositionsFromAPI()
       .then((res) => {
         if (!res.data.success) {
@@ -38,7 +37,7 @@ export const UserForm = () => {
       .catch((err) => {
         console.log(err.message);
       })
-      .finally(() => setPending(false));
+      .finally(() => dispatch(setPending(false)));
   }, []);
 
   const cleanPhoneNumber = (phoneNumber) => {
@@ -47,6 +46,7 @@ export const UserForm = () => {
 
   const handleSubmit = (e, values) => {
     const addUser = (formData, token) => {
+      dispatch(setPending(true));
       addUserToAPI(formData, token)
         .then((result) => {
           if (!result.data.success) {
@@ -86,7 +86,7 @@ export const UserForm = () => {
       .catch((err) => {
         console.log(err.message);
       })
-      .finally(() => setPending(false));
+      .finally(() => dispatch(setPending(false)));
   };
 
   const validation = yup.object().shape({
@@ -140,8 +140,6 @@ export const UserForm = () => {
   };
 
   return (
-    // <div className={css.UserForm}>
-    /* {pending && <>Loadind data...</>} */
     <Formik
       enableReinitialize={true}
       initialValues={{
@@ -234,7 +232,6 @@ export const UserForm = () => {
               </Field>
               <HelperText name="phone" />
             </div>
-            {/* <div id="my-radio-group" className={css.radioContainer}></div> */}
             <div
               role="group"
               aria-labelledby="my-radio-group"
@@ -277,6 +274,5 @@ export const UserForm = () => {
         </Form>
       )}
     </Formik>
-    // </div>
   );
 };

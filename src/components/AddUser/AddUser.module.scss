@@ -1,9 +1,17 @@
 @import "../../sass/mixins";
 
 .addUserSection {
+  scroll-margin-top: 60px;
   margin-bottom: 100px;
 }
 .title {
   @include font-h1;
   margin-bottom: 50px;
+}
+
+.successIcon {
+  display: block;
+  width: 328px;
+  height: 290px;
+  margin: 0 auto;
 }

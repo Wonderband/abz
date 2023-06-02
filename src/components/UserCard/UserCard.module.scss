@@ -19,6 +19,27 @@
 .userInfo {
   width: 100%;
 }
+
+.toolTipContainer {
+  position: relative;
+  width: 100%;
+}
+
+.toolTip {
+  position: absolute;
+  visibility: hidden;
+  top: 47px;
+  // left: 50%;
+  color: getColor("white");
+  background-color: getColor("black");
+  border-radius: 4px;
+  padding: 3px 16px;
+  opacity: 0;
+  max-width: 100%;
+  word-break: break-all;
+  z-index: 10;
+}
+
 .userName,
 .userInfo p {
   text-align: center;
@@ -26,4 +47,17 @@
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.userEmail,
+.userName {
+  &.pointer {
+    cursor: pointer;
+
+    &:hover + .toolTip {
+      visibility: visible;
+      transition: opacity 0.5s ease;
+      opacity: 1;
+    }
+  }
 }

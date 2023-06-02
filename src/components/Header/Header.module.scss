@@ -5,6 +5,8 @@
   width: 100%;
   top: 0;
   background-color: getColor("white");
+  cursor: pointer;
+  z-index: 100;
 }
 
 .headerContainer {

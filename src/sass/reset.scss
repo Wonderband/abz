@@ -48,3 +48,18 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px getColor("background") inset;
   background-clip: content-box;
 }
+
+textarea {
+  /* Resetting all default styles */
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  background-color: transparent;
+}

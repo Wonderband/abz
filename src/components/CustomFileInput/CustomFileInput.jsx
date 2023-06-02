@@ -77,10 +77,14 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
         onChange={handleFileChange}
         style={{ display: "none" }}
       />
-      <div className={`${css.uploadFile} ${error ? css.error : ""}`}>
-        {file && file.name}
-        {!file && "Upload your photo"}
-      </div>
+      <textarea
+        className={`${css.uploadFile} ${error ? css.error : ""} ${
+          file ? css.enabled : ""
+        }`}
+        placeholder="Upload your photo"
+        value={file ? file.name : ""}
+        readOnly
+      ></textarea>
       <div className={css.errorMessage}>{error}</div>
     </div>
   );

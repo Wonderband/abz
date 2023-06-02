@@ -3,22 +3,27 @@ import { AddUser } from "./components/AddUser/AddUser";
 import { GetUsers } from "./components/GetUsers/GetUsers";
 import { Header } from "./components/Header/Header";
 import { Hero } from "./components/Hero/Hero";
-import css from "./App.module.scss";
+
 import { useSelector } from "react-redux";
 import { selectGlobal } from "./redux/selectors";
+import { Loader } from "./components/Loader/Loader";
 
 function App() {
   const addUserRef = useRef(null);
+  const getUsersRef = useRef(null);
   const { pending } = useSelector(selectGlobal);
   const scrollToAddUser = () => {
     addUserRef.current.scrollIntoView({ behavior: "smooth" });
   };
+  const scrollToGetUsers = () => {
+    getUsersRef.current.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <div>
-      <Header onReset={scrollToAddUser} />
-      <Hero />
-      <GetUsers />
-      {pending && <div className={css.loader}>Loading data...</div>}
+      {pending && <Loader />}
+      <Header onResetForm={scrollToAddUser} onResetUsers={scrollToGetUsers} />
+      <Hero onResetForm={scrollToAddUser} />
+      <GetUsers ref={getUsersRef} />
       <AddUser ref={addUserRef} />
     </div>
   );

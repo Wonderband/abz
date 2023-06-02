@@ -18,12 +18,14 @@ export const AddUser = React.forwardRef((_, ref) => {
         )}
         {formSent && (
           <div>
-            <svg className={css.testIcons}>
-              <use href={`${icons}#icon-success-image`}></use>
+            <h2 className={css.title}>User successfully registered</h2>
+
+            <svg className={css.successIcon}>
+              <use
+                href={`${icons}#icon-success-image`}
+                className={css.icon}
+              ></use>
             </svg>
-            {/* <svg className={css.testIcons}>
-              <use href={`${icons}#icon-photo-cover`}></use>
-            </svg> */}
           </div>
         )}
       </div>

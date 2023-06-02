@@ -25,8 +25,13 @@
   border-left: none;
   border-radius: 0 4px 4px 0;
   white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden;
+  @include font-normal;
+  height: 26px;
+
+  &.enabled {
+    color: getColor("black");
+  }
 
   &.error {
     border: 2px solid getColor("error");

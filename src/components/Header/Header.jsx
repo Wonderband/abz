@@ -1,14 +1,20 @@
 import { useDispatch } from "react-redux";
 import icons from "../../img/sprite.svg";
-import { setFormSent } from "../../redux/globalSlice";
+import { setCurrentPage, setFormSent } from "../../redux/globalSlice";
 import { Button } from "../Button/Button";
 import css from "./Header.module.scss";
 
-export const Header = ({ onReset }) => {
+export const Header = ({ onResetForm, onResetUsers }) => {
   const dispatch = useDispatch();
+
+  const resetUsers = () => {
+    onResetUsers();
+    // dispatch(setCurrentPage(1)); we can reset users here if needed
+  };
+
   const resetUserForm = () => {
     dispatch(setFormSent(false));
-    onReset();
+    onResetForm();
   };
 
   return (
@@ -29,7 +35,7 @@ export const Header = ({ onReset }) => {
         <nav>
           <ul className={css.navList}>
             <li>
-              <Button label="Users" />
+              <Button label="Users" clickHandler={resetUsers} />
             </li>
             <li>
               <Button label="Sign up" clickHandler={resetUserForm} />
