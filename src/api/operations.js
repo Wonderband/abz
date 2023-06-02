@@ -13,7 +13,7 @@ export async function getPositionsFromAPI() {
 }
 
 export async function getTokenFromAPI() {
-  return await axIstance.get("token");
+  return await axIstance.get("toke");
 }
 
 export async function addUserToAPI(formData, token) {

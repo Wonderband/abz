@@ -20,6 +20,7 @@ export const CardsList = () => {
 
   useEffect(() => {
     dispatch(setPending(true));
+    dispatch(setError(false));
     const params = { page: currentPage, count: PER_PAGE };
     getUsersFromAPI(params)
       .then((res) => {
@@ -29,7 +30,6 @@ export const CardsList = () => {
         } else dispatch(setUsers([...users, ...res.data.users]));
       })
       .catch((err) => {
-        console.log(err.message);
         dispatch(setError(err.message));
       })
       .finally(() => dispatch(setPending(false)));

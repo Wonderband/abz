@@ -26,19 +26,20 @@ export const UserForm = () => {
 
   useEffect(() => {
     dispatch(setPending(true));
+    dispatch(setError(false));
     getPositionsFromAPI()
       .then((res) => {
         if (!res.data.success) {
-          console.log(res.data.message);
+          dispatch(setError(res.data.message));
           return;
         }
         setPositions(res.data.positions);
       })
       .catch((err) => {
-        console.log(err.message);
+        dispatch(setError(err.message));
       })
       .finally(() => dispatch(setPending(false)));
-  }, []);
+  }, [dispatch]);
 
   const cleanPhoneNumber = (phoneNumber) => {
     return "+" + phoneNumber.replace(/\D/g, "");
@@ -47,17 +48,19 @@ export const UserForm = () => {
   const handleSubmit = (e, values) => {
     const addUser = (formData, token) => {
       dispatch(setPending(true));
+      dispatch(setError(false));
       addUserToAPI(formData, token)
         .then((result) => {
           if (!result.data.success) {
-            console.log(result.data.message);
-            console.log(result.data.fails);
+            dispatch(setError(result.data.message));
+            dispatch(setError(result.data.fails));
             return;
           }
           dispatch(setFormSent(true));
           dispatch(setCurrentPage(1));
         })
         .catch((err) => {
+          dispatch(setError(err.message));
           console.log(err.message);
         })
         .finally(() => dispatch(setPending(false)));
@@ -84,6 +87,7 @@ export const UserForm = () => {
         addUser(formData, token);
       })
       .catch((err) => {
+        dispatch(setError(err.message));
         console.log(err.message);
       })
       .finally(() => dispatch(setPending(false)));
