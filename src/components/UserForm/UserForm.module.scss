@@ -64,17 +64,18 @@
 }
 
 .radioContainer {
-  margin-bottom: 47px;
+  margin-bottom: 40px;
 }
 
 .radioTitle {
+  height: 25px;
   margin-bottom: 11px;
 }
 
-// .radioItem {
-//   display: flex;
-//   align-items: center;
-// }
+.radioItem {
+  display: flex;
+  margin-bottom: 7px;
+}
 
 .radioButton {
   appearance: none;

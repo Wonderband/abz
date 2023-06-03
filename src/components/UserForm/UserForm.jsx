@@ -32,7 +32,6 @@ export const UserForm = () => {
         setPositions(res.data.positions);
       })
       .catch((err) => {
-        console.log(err);
         const response = err.response.data.message;
         dispatch(setError(response ? response : err.message));
       })
@@ -247,9 +246,7 @@ export const UserForm = () => {
                         onChange={() => setFieldValue("picked", position.id)}
                         className={css.radioButton}
                       />
-                      <label htmlFor="picked" className={css.radioLabel}>
-                        {position.name}
-                      </label>
+                      <label htmlFor="picked">{position.name}</label>
                     </li>
                   );
                 })}

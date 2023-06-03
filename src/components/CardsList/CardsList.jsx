@@ -30,7 +30,6 @@ export const CardsList = () => {
         } else dispatch(setUsers([...users, ...res.data.users]));
       })
       .catch((err) => {
-        console.log(err);
         const response = err.response.data.message;
         if (response === "Validation failed")
           dispatch(
