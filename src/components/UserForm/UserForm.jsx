@@ -29,14 +29,12 @@ export const UserForm = () => {
     dispatch(setError(false));
     getPositionsFromAPI()
       .then((res) => {
-        if (!res.data.success) {
-          dispatch(setError(res.data.message));
-          return;
-        }
         setPositions(res.data.positions);
       })
       .catch((err) => {
-        dispatch(setError(err.message));
+        console.log(err);
+        const response = err.response.data.message;
+        dispatch(setError(response ? response : err.message));
       })
       .finally(() => dispatch(setPending(false)));
   }, [dispatch]);
@@ -47,21 +45,20 @@ export const UserForm = () => {
 
   const handleSubmit = (e, values) => {
     const addUser = (formData, token) => {
-      dispatch(setPending(true));
-      dispatch(setError(false));
       addUserToAPI(formData, token)
-        .then((result) => {
-          if (!result.data.success) {
-            dispatch(setError(result.data.message));
-            dispatch(setError(result.data.fails));
-            return;
-          }
+        .then(() => {
           dispatch(setFormSent(true));
           dispatch(setCurrentPage(1));
         })
         .catch((err) => {
-          dispatch(setError(err.message));
-          console.log(err.message);
+          const response = err.response.data.message;
+          if (response === "Validation failed")
+            dispatch(
+              setError(
+                `Validation failed: ${Object.values(err.response.data.fails)}`
+              )
+            );
+          else dispatch(setError(response ? response : err.message));
         })
         .finally(() => dispatch(setPending(false)));
     };
@@ -76,19 +73,15 @@ export const UserForm = () => {
     formData.append("photo", selectedImage);
 
     dispatch(setPending(true));
+    dispatch(setError(false));
     getTokenFromAPI()
       .then((res) => {
-        if (!res.data.success) {
-          console.log(res.data.message);
-          dispatch(setError(res.data.message));
-          return;
-        }
         const token = res.data.token;
         addUser(formData, token);
       })
       .catch((err) => {
-        dispatch(setError(err.message));
-        console.log(err.message);
+        const response = err.response.data.message;
+        dispatch(setError(response ? response : err.message));
       })
       .finally(() => dispatch(setPending(false)));
   };
@@ -99,6 +92,7 @@ export const UserForm = () => {
       .required("Name is required")
       .min(2, "Name should be 2 letters at least")
       .max(60, "Name shouldn't ne longer than 60 letters"),
+
     email: yup
       .string()
       .required("Email is required")
@@ -157,7 +151,7 @@ export const UserForm = () => {
       validateOnChange
       validateOnBlur
     >
-      {({ values, isValid, dirty, setFieldValue, errors, touched }) => (
+      {({ values, isValid, dirty, setFieldValue, errors }) => (
         <Form
           className={css.addUserForm}
           onSubmit={(e) => handleSubmit(e, values)}
@@ -200,7 +194,6 @@ export const UserForm = () => {
                 }`}
               />
               <HelperText name="email" />
-              {/* <ErrorMessage name="email" render={(msg) => <div>{msg}</div>} /> */}
             </div>
             <div className={css.formGroup}>
               <label

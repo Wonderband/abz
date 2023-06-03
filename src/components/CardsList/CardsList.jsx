@@ -30,7 +30,15 @@ export const CardsList = () => {
         } else dispatch(setUsers([...users, ...res.data.users]));
       })
       .catch((err) => {
-        dispatch(setError(err.message));
+        console.log(err);
+        const response = err.response.data.message;
+        if (response === "Validation failed")
+          dispatch(
+            setError(
+              `Validation failed: ${Object.values(err.response.data.fails)}`
+            )
+          );
+        else dispatch(setError(err.message));
       })
       .finally(() => dispatch(setPending(false)));
   }, [currentPage, dispatch, formSent]);

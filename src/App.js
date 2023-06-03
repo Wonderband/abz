@@ -22,15 +22,12 @@ function App() {
   };
   useEffect(() => {
     if (error) {
-      console.log(error);
       toast.error(error);
     }
   }, [error]);
   return (
     <div>
       {pending && <Loader />}
-
-      {/* {error && toast.error(error)} */}
       <Header onResetForm={scrollToAddUser} onResetUsers={scrollToGetUsers} />
       <Hero onResetForm={scrollToAddUser} />
       <GetUsers ref={getUsersRef} />
