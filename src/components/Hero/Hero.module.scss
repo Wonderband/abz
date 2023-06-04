@@ -2,18 +2,52 @@
 @import "../../sass/colors";
 
 .heroSection {
-  background: url("../../img/hero/mob.jpg");
-  box-sizing: border-box;
-  background-position: center bottom;
-  padding: 40px 16px 71px;
+  min-width: 100%;
+  background-image: url("../../img/hero/mob.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
   margin-bottom: 140px;
 
+  @include x2() {
+    background-image: url("../../img/hero/mob@2x.jpg");
+  }
+
   @include mq(tab) {
-    background: url("../../img/hero/tab.jpg");
+    background-image: url("../../img/hero/tab.jpg");
+    // padding: 0;
+    @include x2() {
+      background-image: url("../../img/hero/tab@2x.jpg");
+    }
+  }
+
+  @include mq(lap) {
+    background-image: url("../../img/hero/lap.jpg");
+    @include x2() {
+      background-image: url("../../img/hero/lap@2x.jpg");
+    }
   }
 
   @include mq(desk) {
-    background: url("../../img/hero/desk.jpg");
+    background-image: url("../../img/hero/desk.jpg");
+    min-width: 1170px;
+    margin: 0 auto 140px;
+    @include x2() {
+      background-image: url("../../img/hero/desk@2x.jpg");
+    }
+  }
+}
+
+.textContainer {
+  padding: 40px 16px 71px;
+
+  @include mq(tab) {
+    width: 380px;
+    margin: 0 auto;
+    padding: 89px 0 88px;
+  }
+  @include mq(lap) {
+    padding: 164px 0 163px;
   }
 }
 
@@ -27,13 +61,4 @@
   color: getColor("white");
   text-align: center;
   margin-bottom: 32px;
-}
-
-@media (min-device-pixel-ratio: 2),
-  (-webkit-min-device-pixel-ratio: 2),
-  (min-resolution: 192dpi),
-  (min-resolution: 2dppx) {
-  .heroSection {
-    background: url("../../img/hero/mob@2x.jpg");
-  }
 }

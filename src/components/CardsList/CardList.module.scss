@@ -1,11 +1,28 @@
+@import "../../sass/mixins";
+@import "../../sass/colors";
+
 .usersList {
   display: flex;
+  min-width: 100%;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   gap: 20px;
   margin-bottom: 50px;
+
+  @include mq(tab) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 }
 
 .listItem {
   width: 100%;
+  @include mq(tab) {
+    width: 344px;
+  }
+
+  @include mq(lap) {
+    width: 282px;
+  }
 }
