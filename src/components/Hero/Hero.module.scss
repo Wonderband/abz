@@ -2,14 +2,19 @@
 @import "../../sass/colors";
 
 .heroSection {
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("../../img/pexels-alexandr-podvalny-1227513.jpeg");
-  background-size: 1220px;
+  background: url("../../img/hero/mob.jpg");
   box-sizing: border-box;
-  height: 500px;
   background-position: center bottom;
   padding: 40px 16px 71px;
   margin-bottom: 140px;
+
+  @include mq(tab) {
+    background: url("../../img/hero/tab.jpg");
+  }
+
+  @include mq(desk) {
+    background: url("../../img/hero/desk.jpg");
+  }
 }
 
 .title {
@@ -22,4 +27,13 @@
   color: getColor("white");
   text-align: center;
   margin-bottom: 32px;
+}
+
+@media (min-device-pixel-ratio: 2),
+  (-webkit-min-device-pixel-ratio: 2),
+  (min-resolution: 192dpi),
+  (min-resolution: 2dppx) {
+  .heroSection {
+    background: url("../../img/hero/mob@2x.jpg");
+  }
 }
