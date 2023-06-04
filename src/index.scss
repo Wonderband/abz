@@ -21,6 +21,7 @@ body {
 .container {
   margin: 0 auto;
   padding: 0 16px;
+  box-sizing: border-box;
 
   @include mq(tab) {
     padding: 0 32px;
