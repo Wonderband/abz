@@ -6,6 +6,7 @@ const initialState = {
   users: [],
   currentPage: 1,
   formSent: false,
+  windowWidth: window.innerWidth,
 };
 
 const globalSlice = createSlice({
@@ -27,9 +28,18 @@ const globalSlice = createSlice({
     setFormSent(state, { payload }) {
       state.formSent = payload;
     },
+    setWindowWidth(state, { payload }) {
+      state.windowWidth = payload;
+    },
   },
 });
 
-export const { setError, setPending, setUsers, setCurrentPage, setFormSent } =
-  globalSlice.actions;
+export const {
+  setError,
+  setPending,
+  setUsers,
+  setCurrentPage,
+  setFormSent,
+  setWindowWidth,
+} = globalSlice.actions;
 export const globalReducer = globalSlice.reducer;

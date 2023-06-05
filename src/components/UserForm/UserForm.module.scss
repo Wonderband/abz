@@ -3,6 +3,18 @@
 
 .inputFieldsWrapper {
   margin-bottom: 30px;
+
+  @include mq(tab) {
+    padding: 0 162px;
+  }
+
+  @include mq(lap) {
+    padding: 0 262px;
+  }
+
+  @include mq(desk) {
+    padding: 0 395px;
+  }
 }
 
 .formGroup {
@@ -35,9 +47,8 @@
 
 .inputField {
   box-sizing: border-box;
-  height: 54px;
   width: 100%;
-  padding: 14px 16px;
+  padding: 13px 16px; // 14px in mockup, including border
   @include font-normal;
   color: getColor("formText");
   background-color: getColor("background");
@@ -47,8 +58,10 @@
 
   &:focus {
     border: 2px solid getColor("border");
+    padding: 12px 16px; // 2px border with the same height
   }
   &.error {
+    padding: 12px 16px; // 2px border with the same height
     border: 2px solid getColor("error");
   }
 }
@@ -64,7 +77,7 @@
 }
 
 .radioContainer {
-  margin-bottom: 40px;
+  margin-bottom: 47px;
 }
 
 .radioTitle {
@@ -86,9 +99,10 @@
   border-radius: 50%;
   border: 1px solid getColor("border");
   margin-right: 12px;
+  outline: none;
 
   &:checked {
-    border-color: #00bdd3;
+    border-color: getColor("secondary");
 
     &::before {
       content: "";
@@ -98,7 +112,7 @@
       transform: translate(-50%, -50%);
       width: 10px;
       height: 10px;
-      background-color: #00bdd3;
+      background-color: getColor("secondary");
       border-radius: 50%;
     }
   }

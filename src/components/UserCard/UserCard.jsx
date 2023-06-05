@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectGlobal } from "../../redux/selectors";
 import css from "./UserCard.module.scss";
 
 export const UserCard = ({ user }) => {
@@ -6,6 +8,7 @@ export const UserCard = ({ user }) => {
   const refEmail = useRef(null);
   const [isEmailOverflown, setIsEmailOverflown] = useState(false);
   const [isNameOverflown, setIsNameOverflown] = useState(false);
+  const { windowWidth } = useSelector(selectGlobal);
 
   const isOverflown = (ref) => {
     const element = ref.current;
@@ -15,7 +18,7 @@ export const UserCard = ({ user }) => {
   useEffect(() => {
     setIsEmailOverflown(isOverflown(refEmail));
     setIsNameOverflown(isOverflown(refName));
-  }, []);
+  }, [windowWidth]);
   return (
     <div className={css.userCard}>
       <img

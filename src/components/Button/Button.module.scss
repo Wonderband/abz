@@ -13,13 +13,15 @@
     width: 120px;
   }
 
+  &:hover,
+  &:focus {
+    background: getColor("hover");
+    outline: none;
+  }
+
   &:disabled {
     background: getColor("disabled");
     color: getColor("white");
     cursor: auto;
-  }
-
-  &:hover {
-    background: getColor("hover");
   }
 }

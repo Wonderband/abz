@@ -4,16 +4,18 @@ import { GetUsers } from "./components/GetUsers/GetUsers";
 import { Header } from "./components/Header/Header";
 import { Hero } from "./components/Hero/Hero";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectGlobal } from "./redux/selectors";
 import { Loader } from "./components/Loader/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { setWindowWidth } from "./redux/globalSlice";
 
 function App() {
   const addUserRef = useRef(null);
   const getUsersRef = useRef(null);
   const { pending, error } = useSelector(selectGlobal);
+  const dispatch = useDispatch();
   const scrollToAddUser = () => {
     addUserRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -25,6 +27,22 @@ function App() {
       toast.error(error);
     }
   }, [error]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const currentWidth = window.innerWidth;
+      if (currentWidth >= 768) {
+        dispatch(setWindowWidth(768));
+        return;
+      } else dispatch(setWindowWidth(currentWidth));
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [dispatch]);
+
   return (
     <div>
       {pending && <Loader />}
