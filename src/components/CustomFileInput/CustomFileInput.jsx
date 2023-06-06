@@ -100,6 +100,7 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
       />
 
       <textarea
+        id="fileName"
         className={`${css.uploadFile} ${error ? css.error : ""} ${
           file ? css.enabled : ""
         } ${file && truncatedFileName !== file?.name ? css.pointer : ""}`}

@@ -169,6 +169,7 @@ export const UserForm = () => {
                 id="name"
                 name="name"
                 placeholder="Your name"
+                autoComplete="off"
                 className={`${css.inputField} ${
                   errors.name && values.name ? css.error : ""
                 }`}
@@ -188,6 +189,7 @@ export const UserForm = () => {
                 id="email"
                 name="email"
                 placeholder="Email"
+                autoComplete="off"
                 className={`${css.inputField} ${
                   errors.email && values.email ? css.error : ""
                 }`}
@@ -196,7 +198,7 @@ export const UserForm = () => {
             </div>
             <div className={css.formGroup}>
               <label
-                htmlFor="phone"
+                htmlFor="phoneId"
                 className={`${css.inputLabel} ${
                   values.phone ? css.touched : ""
                 } ${
@@ -215,6 +217,8 @@ export const UserForm = () => {
                     {...field}
                     mask="+38 (099) 999-99-99"
                     placeholder="Phone"
+                    id="phoneId"
+                    autoComplete="off"
                     className={`${css.inputField} ${
                       errors.phone &&
                       values.phone &&
@@ -222,7 +226,6 @@ export const UserForm = () => {
                         ? css.error
                         : ""
                     }`}
-                    // maskPlaceholder="_"
                   />
                 )}
               </Field>
@@ -255,7 +258,6 @@ export const UserForm = () => {
             </div>
 
             <CustomFileInput
-              isValid={isFileUploadValid}
               setIsValid={setIsFileUploadValid}
               passSelectedFile={setselectedImage}
             />
@@ -264,7 +266,6 @@ export const UserForm = () => {
             label="Sign up"
             type="submit"
             disabled={!isValid || !dirty || !isFileUploadValid}
-            clickHandler={() => {}}
           />
         </Form>
       )}
