@@ -1,7 +1,10 @@
+//styles for all App
+
 @import-normalize;
 @import "./sass/reset.scss";
 @import "./sass/colors";
 @import "./sass/mixins";
+@import "./sass/fonts";
 
 body {
   font-family: "Nunito", sans-serif;
