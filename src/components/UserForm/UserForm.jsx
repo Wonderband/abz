@@ -241,12 +241,13 @@ export const UserForm = () => {
                       <Field
                         type="radio"
                         name="picked"
+                        id={position.id}
                         value={position.id}
                         checked={values.picked === position.id}
                         onChange={() => setFieldValue("picked", position.id)}
                         className={css.radioButton}
                       />
-                      <label htmlFor="picked">{position.name}</label>
+                      <label htmlFor={position.id}>{position.name}</label>
                     </li>
                   );
                 })}
