@@ -23,7 +23,7 @@ export const CustomFileInput = ({ setIsValid, passSelectedFile }) => {
           const height = img.naturalHeight;
           resolve(width >= 70 && height >= 70);
         };
-      } else reject("Not image!");
+      } else reject("Not an image!");
     });
   };
 
